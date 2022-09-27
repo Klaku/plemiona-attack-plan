@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Form } from 'react-bootstrap'
-import { MapContainer, TileLayer, useMap, Polygon, Tooltip, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, Polygon, Tooltip, Popup, Circle } from 'react-leaflet'
 import * as leaflet from 'leaflet'
 import { ITribe, TribeContext } from '../context/Tribe.context'
 import { AppContext } from '../context/App.context'
@@ -32,6 +32,7 @@ const Panel = (props: PropsWithChildren<{}>) => {
     let [sojusznicyNaMapie, setSojusznicyNaMapie] = useState([] as { village: IVillage; player: IPlayer; tribe: ITribe }[])
     let [rozkazy, setRozkazy] = useState([] as IRozkaz[])
     let [nowyRozkaz, setNowyRozkaz] = useState({ id: null, source: null, target: null, typRozkazu: null, widoczny: false } as IRozkaz)
+    let [circle, setCircle] = useState([-500, 500])
     let contexts = {
         app: useContext(AppContext),
         player: useContext(PlayerContext),
@@ -195,6 +196,10 @@ const Panel = (props: PropsWithChildren<{}>) => {
                     style={{ height: 800, width: 800 }}
                     crs={leaflet.CRS.Simple}
                 >
+                    <Circle center={circle as leaflet.LatLngExpression} radius={18} fill={false} color={'#000'} />
+                    <Circle center={circle as leaflet.LatLngExpression} radius={14} fill={false} color={'#000'} />
+                    <Circle center={circle as leaflet.LatLngExpression} radius={16} fill={false} color={'#fff'} />
+                    <Circle center={circle as leaflet.LatLngExpression} radius={12} fill={false} color={'#fff'} />
                     {[-100, -200, -300, -400, -500, -600, -700, -800, -900].map((x) => {
                         return (
                             <Polygon
@@ -349,6 +354,7 @@ const Panel = (props: PropsWithChildren<{}>) => {
                                 eventHandlers={{
                                     click: () => {
                                         if (nowyRozkaz.id != null) {
+                                            setCircle([Number(x.village.y) * -1, Number(x.village.x)])
                                             setNowyRozkaz({
                                                 ...nowyRozkaz,
                                                 source: {
@@ -490,6 +496,21 @@ const Panel = (props: PropsWithChildren<{}>) => {
                                 </td>
                                 <td>
                                     {nowyRozkaz.source && `${nowyRozkaz.source?.player.name} (${nowyRozkaz.source?.village.x}|${nowyRozkaz.source?.village.y})`}
+                                </td>
+                                <td>
+                                    {nowyRozkaz.source &&
+                                        nowyRozkaz.target &&
+                                        `${new Date(
+                                            Math.sqrt(
+                                                Math.pow(Math.abs(Number(nowyRozkaz.target.village.x) - Number(nowyRozkaz.source.village.x)), 2) +
+                                                    Math.pow(Math.abs(Number(nowyRozkaz.source.village.x) - Number(nowyRozkaz.source.village.x)), 2)
+                                            ) *
+                                                30 *
+                                                60 *
+                                                1000
+                                        )
+                                            .toISOString()
+                                            .substr(11, 8)}`}
                                 </td>
                                 <td
                                     style={{ color: 'green', cursor: 'pointer', maxWidth: 70 }}
