@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/plemiona-attack-plan/static/css/main.cb60f7ea.css",
-    "main.js": "/plemiona-attack-plan/static/js/main.f1452cd8.js",
+    "main.css": "/plemiona-attack-plan/static/css/main.61eb8b75.css",
+    "main.js": "/plemiona-attack-plan/static/js/main.9bb1a54a.js",
     "index.html": "/plemiona-attack-plan/index.html",
-    "main.cb60f7ea.css.map": "/plemiona-attack-plan/static/css/main.cb60f7ea.css.map",
-    "main.f1452cd8.js.map": "/plemiona-attack-plan/static/js/main.f1452cd8.js.map"
+    "main.61eb8b75.css.map": "/plemiona-attack-plan/static/css/main.61eb8b75.css.map",
+    "main.9bb1a54a.js.map": "/plemiona-attack-plan/static/js/main.9bb1a54a.js.map"
   },
   "entrypoints": [
-    "static/css/main.cb60f7ea.css",
-    "static/js/main.f1452cd8.js"
+    "static/css/main.61eb8b75.css",
+    "static/js/main.9bb1a54a.js"
   ]
 }
