@@ -6,12 +6,24 @@ import { DataContext } from '../../contexts/Data.Context'
 import { IPlayer } from '../../types/IPlayer'
 import { ITribe } from '../../types/ITribe'
 import Icon_Snob from '../../assets/images/unit_snob.png'
+import { CalculateDuration, CalculateSendTime, OperationType, PlanerContext } from '../../contexts/Planer.Context'
 const Tooltip = (props: PropsWithChildren<{ village: IVillage }>) => {
     const context = {
         data: React.useContext(DataContext),
+        planer: React.useContext(PlanerContext),
     }
     const owner = (context.data.player.items as IPlayer[]).filter((x) => x.player_id_num == props.village.player_id_num)[0]
     const tribe = owner && (context.data.tribe.items as ITribe[]).filter((x) => x.tribe_id_num == owner.tribe_id_num)[0]
+    const wychodzace = context.planer.items
+        .filter((x) => x.source.player.player_id_num == owner.player_id_num)
+        .sort((a, b) => {
+            return a.dateApproach > b.dateApproach ? 1 : -1
+        })
+    const przychodzace = context.planer.items
+        .filter((x) => x.target.player.player_id_num == owner.player_id_num)
+        .sort((a, b) => {
+            return a.dateApproach > b.dateApproach ? 1 : -1
+        })
     return (
         <TT>
             <Table>
@@ -35,17 +47,46 @@ const Tooltip = (props: PropsWithChildren<{ village: IVillage }>) => {
                             <td>{`${tribe.name} (${Intl.NumberFormat('de-DE').format(tribe.points_num)} Punktów)`}</td>
                         </tr>
                     )}
-                    {
+                    {context.planer.activeTarget != null && (
                         <tr>
-                            <td colSpan={2}>
-                                <BadgeContainer>
-                                    <div>
-                                        <img src={Icon_Snob} />
-                                    </div>
-                                </BadgeContainer>
-                            </td>
+                            <PropertyCell>Czas Podróży:</PropertyCell>
+                            <td>{CalculateDuration(props.village, context.planer.activeTarget.village, context.planer.operationType)}</td>
                         </tr>
-                    }
+                    )}
+                    {przychodzace.length > 0 && (
+                        <tr>
+                            <CenterTd colSpan={2}>Przybywające</CenterTd>
+                        </tr>
+                    )}
+                    {przychodzace.map((operation) => {
+                        return (
+                            <tr key={operation.Id}>
+                                <PropertyCell>{operation.dateApproach.toLocaleTimeString()}</PropertyCell>
+                                <td>
+                                    <SplitTd>{`${operation.source.player.name}`}</SplitTd>
+                                    <SplitTd>{`(${operation.source.village.x_num}|${operation.source.village.y_num})`}</SplitTd>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                    {wychodzace.length > 0 && (
+                        <tr>
+                            <CenterTd colSpan={2}>Wychodzące</CenterTd>
+                        </tr>
+                    )}
+                    {wychodzace.map((operation) => {
+                        return (
+                            <tr key={operation.Id}>
+                                <PropertyCell>{operation.dateApproach.toLocaleTimeString()}</PropertyCell>
+                                <td>
+                                    <RowContainer>
+                                        <SplitTd>{`${operation.target.player.name}`}</SplitTd>
+                                        <SplitTd>{`(${operation.target.village.x_num}|${operation.target.village.y_num})`}</SplitTd>
+                                    </RowContainer>
+                                </td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </Table>
         </TT>
@@ -53,7 +94,19 @@ const Tooltip = (props: PropsWithChildren<{ village: IVillage }>) => {
 }
 
 export default Tooltip
-
+export const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`
+export const SplitTd = styled.div``
+export const CenterTd = styled.td`
+    text-align: center;
+    font-weight: 600;
+    padding-top: 10px;
+    color: #666;
+`
 export const BadgeContainer = styled.div`
     display: flex;
     flex-direction: row;

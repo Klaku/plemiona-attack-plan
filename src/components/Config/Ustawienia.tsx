@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
-import { Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import styled from 'styled-components'
 import { SettingsContext } from '../../contexts/Settings.Context'
 const Ustawienia = (props: PropsWithChildren<{}>) => {
@@ -66,6 +66,9 @@ const Ustawienia = (props: PropsWithChildren<{}>) => {
                     }}
                 ></Form.Control>
                 <Form.Text>Czas pierwszego ataku</Form.Text>
+            </CustomForm>
+            <CustomForm>
+                <Button variant="default">Format Widomości do Gracza</Button>
             </CustomForm>
         </Wrapper>
     )

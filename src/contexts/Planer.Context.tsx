@@ -78,3 +78,10 @@ export const CalculateSendTime = (item: ITarget) => {
     let dystans = Math.sqrt(Math.pow(dystansX, 2) + Math.pow(dystansY, 2))
     return new Date(Math.floor(item.dateApproach.getTime() - tempo * 60 * 1000 * dystans))
 }
+export const CalculateDuration = (village1: IVillage, village2: IVillage, operation: OperationType) => {
+    let tempo = operation == OperationType.Szlachta ? 35 : 30
+    let dystansX = village1.x_num - village2.x_num
+    let dystansY = village1.y_num - village2.y_num
+    let dystans = Math.sqrt(Math.pow(dystansX, 2) + Math.pow(dystansY, 2))
+    return new Date(Math.floor(tempo * 60 * 1000 * dystans)).toISOString().slice(11, -5)
+}

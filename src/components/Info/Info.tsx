@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { PlanerContext } from '../../contexts/Planer.Context'
+import Actions from './Actions/Actions'
 import Active from './Active'
 import Targets from './Targets'
 
@@ -12,6 +13,7 @@ const Info = (props: PropsWithChildren<{}>) => {
         <Wrapper>
             {context.planer.activeTarget != null && <Active />}
             <Targets />
+            <Actions />
         </Wrapper>
     )
 }
