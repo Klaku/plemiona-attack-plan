@@ -1,5 +1,9 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 const LOCAL_STORAGE_WORLD_PREFIX_KEY = 'CACHE_WORLD_PREFIX'
+const PLAYER_MESSAGE_TEMPLATE = `Twoje cele na akcje $Date
+
+$Targets
+`
 export enum ScreenOptions {
     None = 0,
     Data = 1,
@@ -22,6 +26,10 @@ export interface ISettings {
         value: number
         update: (value: number) => void
     }
+    playerMessage: {
+        value: string
+        update: (value: string) => void
+    }
 }
 
 const defaultContext: ISettings = {
@@ -41,6 +49,10 @@ const defaultContext: ISettings = {
         value: 500,
         update: () => {},
     },
+    playerMessage: {
+        value: '',
+        update: () => {},
+    },
 }
 
 export const SettingsContext = React.createContext(defaultContext)
@@ -50,6 +62,7 @@ export const SettingsContextProvider = (props: PropsWithChildren<{}>) => {
     const [delay, setDelay] = useState(1000)
     const [screen, setScreen] = useState(ScreenOptions.None)
     const [attack_start, setAttackStart] = useState(new Date())
+    const [playerMessage, setPlayerMessage] = useState(PLAYER_MESSAGE_TEMPLATE)
     const UpdateWorldSelection = (world_prefix: string) => {
         localStorage.setItem(LOCAL_STORAGE_WORLD_PREFIX_KEY, world_prefix)
         setWorld(world_prefix)
@@ -79,6 +92,10 @@ export const SettingsContextProvider = (props: PropsWithChildren<{}>) => {
                 attack_start: {
                     value: attack_start,
                     update: setAttackStart,
+                },
+                playerMessage: {
+                    value: playerMessage,
+                    update: setPlayerMessage,
                 },
             }}
         >

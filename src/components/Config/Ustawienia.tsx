@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import styled from 'styled-components'
 import { SettingsContext } from '../../contexts/Settings.Context'
+import PlayerMessageModal from './Modals/PlayerMessage.modal'
 const Ustawienia = (props: PropsWithChildren<{}>) => {
     const [start, setStart] = useState('')
     const context = {
@@ -39,6 +40,7 @@ const Ustawienia = (props: PropsWithChildren<{}>) => {
             )
         }
     }
+    const [modalVisible, setModalVisible] = useState(false)
     return (
         <Wrapper>
             <CustomForm>
@@ -68,8 +70,23 @@ const Ustawienia = (props: PropsWithChildren<{}>) => {
                 <Form.Text>Czas pierwszego ataku</Form.Text>
             </CustomForm>
             <CustomForm>
-                <Button variant="default">Format Widomości do Gracza</Button>
+                <Button
+                    onClick={() => {
+                        setModalVisible(true)
+                    }}
+                    variant="default"
+                >
+                    Format Widomości do Gracza
+                </Button>
             </CustomForm>
+            {modalVisible && (
+                <PlayerMessageModal
+                    isVisible={modalVisible}
+                    hideHandler={() => {
+                        setModalVisible(false)
+                    }}
+                />
+            )}
         </Wrapper>
     )
 }
