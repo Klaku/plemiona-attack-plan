@@ -12,8 +12,14 @@ const Active = (props: PropsWithChildren<{}>) => {
         <Wrapper>
             <Header>
                 <TargetInfo>
-                    <div>{`${context.activeTarget?.village.name} (${Intl.NumberFormat('de-DE').format(context.activeTarget?.village.points_num || 0)} Punktów)`}</div>
-                    <div>{context.activeTarget?.player.name}</div>
+                    <TargetInfoRow>
+                        <Strong>{context.activeTarget?.player.name}</Strong>
+                        <Strong>{`(${Intl.NumberFormat('de-DE').format(context.activeTarget?.player.points_num || 0)} Punktów)`}</Strong>
+                    </TargetInfoRow>
+                    <TargetInfoRow>
+                        <Strong>{context.activeTarget?.village.name}</Strong>
+                        <Strong>{`(${Intl.NumberFormat('de-DE').format(context.activeTarget?.village.points_num || 0)} Punktów)`}</Strong>
+                    </TargetInfoRow>
                 </TargetInfo>
             </Header>
             <ButtonContainer>
@@ -69,6 +75,7 @@ const Active = (props: PropsWithChildren<{}>) => {
 }
 
 export default Active
+
 export const ButtonContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -98,6 +105,15 @@ export const TargetInfo = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+export const TargetInfoRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`
+export const Strong = styled.div`
+    font-weight: 600;
 `
 export const IconContainer = styled.div`
     display: flex;

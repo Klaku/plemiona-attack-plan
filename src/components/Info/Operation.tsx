@@ -36,7 +36,10 @@ const Operation = (
         <Wrapper style={{ backgroundColor: props.target.OperationType == OperationType.Fake ? '#66666635' : props.target.OperationType == OperationType.Atak ? '#00ff0025' : '#ff000025' }}>
             <Row>
                 <DataWrapper>
-                    <TitleContainer>{`${props.target.source.player.name} (${props.target.source.village.x_num}|${props.target.source.village.y_num})`}</TitleContainer>
+                    <TitleContainer>
+                        <div>{props.target.source.player.name}</div>
+                        <div>{`(${props.target.source.village.x_num}|${props.target.source.village.y_num})`}</div>
+                    </TitleContainer>
                     <table>
                         <tbody>
                             <tr>
@@ -90,6 +93,10 @@ export const CustomTd = styled.td`
 export const TitleContainer = styled.div`
     font-size: 14px;
     font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 `
 export const DateContainer = styled.div`
     font-size: 12px;
