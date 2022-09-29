@@ -36,9 +36,6 @@ const TribeMarkers = (
                     color = context.map.wioski_atakowane.filter((x) => x.village_id_num == village.village_id_num).length > 0 ? context.map.wioski_atakowane_color : color
                     let szlachta = context.map.wioski_szlachta.filter((x) => x.village_id_num == village.village_id_num).length > 0
                     let activeTarget = context.planner.activeTarget != null && context.planner.activeTarget.village.village_id_num == village.village_id_num
-                    if (activeTarget) {
-                        console.log(123)
-                    }
                     return (
                         <Polygon
                             stroke={szlachta || activeTarget}

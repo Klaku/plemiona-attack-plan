@@ -57,6 +57,9 @@ const Active = (props: PropsWithChildren<{}>) => {
             <Content>
                 {context.items
                     .filter((x) => x.target.village.village_id_num == context.activeTarget?.village.village_id_num)
+                    .sort((a, b) => {
+                        return a.dateApproach > b.dateApproach ? 1 : -1
+                    })
                     .map((target) => {
                         return <Operation target={target} key={target.Id} />
                     })}

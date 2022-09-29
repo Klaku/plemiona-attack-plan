@@ -11,7 +11,6 @@ const HeaderComponent = (props: PropsWithChildren<{}>) => {
             <ApplicationTitle>Planer Akcji</ApplicationTitle>
             <NavDropdown
                 onSelect={(e) => {
-                    console.log(e)
                     context.settings.world.update(e || '')
                 }}
                 defaultValue={context.settings.world.value}

@@ -47,7 +47,6 @@ export const MapContextProvider = (props: PropsWithChildren<{}>) => {
     const [wioski_atakowane, setWioskiAtakowane] = useState([] as IVillage[])
     const [wioski_atakowane_color, setWioskiAtakowaneColor] = useState('#000')
     const [mapKey, setMapKey] = useState(new Date())
-    console.log(wioski_szlachta)
     return (
         <MapContext.Provider
             value={{
