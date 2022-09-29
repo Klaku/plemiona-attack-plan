@@ -19,9 +19,8 @@ const Linie = (props: PropsWithChildren<{}>) => {
         <LayersControl.Overlay checked name="Linie">
             <LayerGroup key={3}>
                 {context.planer.items
-                    .filter((x) => x.target.village.village_id_num == context.planer.activeTarget?.village.village_id_num)
+                    .filter((x) => x.target.village.village_id_num == context.planer.activeTarget?.village.village_id_num || x.source.village.village_id_num == context.planer.activeTarget?.village.village_id_num)
                     .map((x) => {
-                        console.log(x)
                         return (
                             <Polygon
                                 fillColor={x.OperationType == OperationType.Fake ? '#666' : x.OperationType == OperationType.Atak ? '#0f0' : '#f00'}
