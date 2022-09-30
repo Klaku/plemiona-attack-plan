@@ -21,6 +21,7 @@ const Targets = (props: PropsWithChildren<{}>) => {
             {uniqueTargets.map((x) => {
                 return (
                     <ListItem
+                        key={x.Id}
                         onClick={() => {
                             context.planer.setActiveTarget(x.target)
                             context.map.setMapKey(new Date())
