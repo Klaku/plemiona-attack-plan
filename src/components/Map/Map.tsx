@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react'
-import { LayersControl, MapContainer, MapContainerProps } from 'react-leaflet'
-import * as leaflet from 'leaflet'
+import { LayersControl, MapContainer, MapContainerProps, Polygon, PolygonProps } from 'react-leaflet'
 import styled from 'styled-components'
-import Kontynenty from './Kontynenty'
-import Tlo from './Tlo'
-import { MapContext } from '../../contexts/Map.Context'
-import TribeMarkers from './TribeMarkers'
-import Linie from './Linie'
+import * as leaflet from 'leaflet'
+import { MapContext } from '../../contexts/Map'
+import Continents from './Continents'
+import { DataContext } from '../../contexts/Data'
+import { FilterContext } from '../../contexts/Filter'
+import Markers from './Markers'
 const MapContainerProperties: MapContainerProps = {
     center: [-500, 500],
     zoom: 2,
@@ -16,20 +16,32 @@ const MapContainerProperties: MapContainerProps = {
     ],
     crs: leaflet.CRS.Simple,
 }
+const BackgroundProperties: PolygonProps = {
+    stroke: false,
+    fillOpacity: 1,
+    color: '#333',
+    fillColor: '#333',
+    positions: [
+        [0, 0],
+        [-1000, 0],
+        [-1000, 1000],
+        [0, 1000],
+    ],
+}
 const Map = (props: PropsWithChildren<{}>) => {
     const context = {
         map: React.useContext(MapContext),
+        data: React.useContext(DataContext),
+        filters: React.useContext(FilterContext),
     }
+
     return (
-        <Wrapper id="map">
-            <MapContainer {...MapContainerProperties} style={{ width: 'calc(100vw - 500px)', height: 'calc(100vh - 50px)' }}>
-                <LayersControl position="topright" key={context.map.mapKey.toLocaleString()}>
-                    <Tlo />
-                    <Kontynenty />
-                    {context.map.tribes.map((tribe) => {
-                        return <TribeMarkers key={tribe.tribe_id_num} tribe={tribe} />
-                    })}
-                    <Linie />
+        <Wrapper>
+            <MapContainer key={context.map.key[0]} {...MapContainerProperties} style={{ width: 'calc(100vw - 400px)', height: '100vh' }}>
+                <Polygon {...BackgroundProperties} />
+                <LayersControl position="topright">
+                    <Continents />
+                    <Markers />
                 </LayersControl>
             </MapContainer>
         </Wrapper>
@@ -39,6 +51,7 @@ const Map = (props: PropsWithChildren<{}>) => {
 export default Map
 
 export const Wrapper = styled.div`
+    display: flex;
     flex-grow: 1;
-    height: calc(100vh - 50px);
+    height: 100vh;
 `

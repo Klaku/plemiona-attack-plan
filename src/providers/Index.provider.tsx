@@ -1,18 +1,18 @@
 import React, { PropsWithChildren } from 'react'
-import { DataContextProvider } from '../contexts/Data.Context'
-import { MapContextProvider } from '../contexts/Map.Context'
-import { PlanerContextProvider } from '../contexts/Planer.Context'
-import { SettingsContextProvider } from '../contexts/Settings.Context'
+import { DataContextProvider } from '../contexts/Data'
+import { FilterContextProvider } from '../contexts/Filter'
+import { MapContextProvider } from '../contexts/Map'
+import ThemeProvider from './Theme.provider'
 
 const IndexProvider = (props: PropsWithChildren<{}>) => {
     return (
-        <SettingsContextProvider>
+        <ThemeProvider>
             <DataContextProvider>
-                <PlanerContextProvider>
+                <FilterContextProvider>
                     <MapContextProvider>{props.children}</MapContextProvider>
-                </PlanerContextProvider>
+                </FilterContextProvider>
             </DataContextProvider>
-        </SettingsContextProvider>
+        </ThemeProvider>
     )
 }
 
