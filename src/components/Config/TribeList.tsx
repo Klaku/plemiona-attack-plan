@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { DataContext } from '../../contexts/Data.Context'
 import { ISelectedTribe, ITribe } from '../../types/ITribe'
@@ -9,6 +9,10 @@ const TribeList = (props: PropsWithChildren<{}>) => {
     const context = React.useContext(DataContext)
     const map_context = React.useContext(MapContext)
     const [selected, setSelected] = useState([] as ISelectedTribe[])
+    useEffect(() => {
+        setSelected(map_context.tribes)
+        setFilter('');
+    }, [map_context.tribes])
     const tribes = context.tribe.items as ITribe[]
     const [filter, setFilter] = useState('')
     const Save = () => {
