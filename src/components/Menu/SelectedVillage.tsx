@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { CloseButton, Form, Table } from 'react-bootstrap'
 import styled from 'styled-components'
 import { MapContext } from '../../contexts/Map'
+import Plan from './Plan'
 
 const SelectedVillage = (props: PropsWithChildren<{}>) => {
     const context = {
@@ -45,6 +46,16 @@ const SelectedVillage = (props: PropsWithChildren<{}>) => {
                 <Row>
                     <Title>Plany</Title>
                 </Row>
+                {context.map.plans[0]
+                    .filter((x) => x.target.village_id_num == village.village_id_num)
+                    .sort((a, b) => {
+                        return a.order > b.order ? 1 : -1
+                    })
+                    .map((plan) => (
+                        <Row style={{ width: '100%', marginTop: 5 }}>
+                            <Plan plan={plan} />
+                        </Row>
+                    ))}
             </Wrapper>
         )
     }
