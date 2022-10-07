@@ -1,3 +1,6 @@
+import { IPlayer } from './IPlayer'
+import { ISelectedTribe, ITribe } from './ITribe'
+
 export interface IVillage {
     village_id: string
     village_id_num: number
@@ -16,4 +19,9 @@ export interface IVillage {
 
 export interface ISelectedVillage extends IVillage {
     color: string
+}
+
+export interface IVillageData extends ISelectedVillage {
+    tribe: ISelectedTribe
+    player: IPlayer
 }

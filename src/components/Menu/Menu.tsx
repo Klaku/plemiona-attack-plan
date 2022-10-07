@@ -1,11 +1,12 @@
 import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import MenuOptions from './MenuOptions'
+import SelectedVillage from './SelectedVillage'
 
 const Menu = (props: PropsWithChildren<{}>) => {
     return (
         <Wrapper>
-            <div>Data Placeholder</div>
+            <SelectedVillage />
             <MenuOptions />
         </Wrapper>
     )
