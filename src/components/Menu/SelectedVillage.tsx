@@ -1,14 +1,58 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useState, useEffect } from 'react'
 import { CloseButton, Form, Table } from 'react-bootstrap'
 import styled from 'styled-components'
-import { MapContext } from '../../contexts/Map'
+import { IPlan, MapContext } from '../../contexts/Map'
+import { IVillageData } from '../../types/IVillage'
 import Plan from './Plan'
 
 const SelectedVillage = (props: PropsWithChildren<{}>) => {
     const context = {
         map: React.useContext(MapContext),
     }
-    const village = context.map.selectedVillage[0]
+    const [village, setVillage] = useState(null as IVillageData | null)
+    useEffect(() => setVillage(context.map.selectedVillage[0]), [context.map.selectedVillage[0]])
+
+    const onDeletePlanClick = (planId: number) => {
+        context.map.plans[1](context.map.plans[0].filter((x) => x.id != planId))
+    }
+    const onMoveDownClick = (planId: number) => {
+        if (village == null) return
+        let plans_targeted_active_village = context.map.plans[0].filter((x) => x.target.village_id_num == village.village_id_num)
+        let selected_plan = plans_targeted_active_village.filter((x) => x.id == planId)[0]
+        let prev_plans = plans_targeted_active_village.filter((x) => x.order < selected_plan.order)
+        let next_plans = plans_targeted_active_village.filter((x) => x.order > selected_plan.order)
+        selected_plan.order += 1.5
+        let combined_plans = [...prev_plans, ...next_plans, selected_plan]
+            .sort((a, b) => {
+                return a.order > b.order ? 1 : -1
+            })
+            .map((x, i) => {
+                return {
+                    ...x,
+                    order: i,
+                }
+            })
+        context.map.plans[1]([...context.map.plans[0].filter((x) => x.target.village_id_num != village.village_id_num), ...combined_plans])
+    }
+    const onMoveUpClick = (planId: number) => {
+        if (village == null) return
+        let plans_targeted_active_village = context.map.plans[0].filter((x) => x.target.village_id_num == village.village_id_num)
+        let selected_plan = plans_targeted_active_village.filter((x) => x.id == planId)[0]
+        let prev_plans = plans_targeted_active_village.filter((x) => x.order < selected_plan.order)
+        let next_plans = plans_targeted_active_village.filter((x) => x.order > selected_plan.order)
+        selected_plan.order -= 1.5
+        let combined_plans = [...prev_plans, ...next_plans, selected_plan]
+            .sort((a, b) => {
+                return a.order > b.order ? 1 : -1
+            })
+            .map((x, i) => {
+                return {
+                    ...x,
+                    order: i,
+                }
+            })
+        context.map.plans[1]([...context.map.plans[0].filter((x) => x.target.village_id_num != village.village_id_num), ...combined_plans])
+    }
     if (village == null) {
         return <Wrapper></Wrapper>
     } else {
@@ -47,13 +91,22 @@ const SelectedVillage = (props: PropsWithChildren<{}>) => {
                     <Title>Plany</Title>
                 </Row>
                 {context.map.plans[0]
-                    .filter((x) => x.target.village_id_num == village.village_id_num)
+                    .filter((x) => x.target.village_id_num == village?.village_id_num)
                     .sort((a, b) => {
                         return a.order > b.order ? 1 : -1
                     })
                     .map((plan) => (
-                        <Row style={{ width: '100%', marginTop: 5 }}>
-                            <Plan plan={plan} />
+                        <Row key={plan.id} style={{ width: '100%', marginTop: 5 }}>
+                            <Plan
+                                plan={plan}
+                                onDeleteClick={() => onDeletePlanClick(plan.id)}
+                                onMoveDownClick={() => {
+                                    onMoveDownClick(plan.id)
+                                }}
+                                onMoveUpClick={() => {
+                                    onMoveUpClick(plan.id)
+                                }}
+                            />
                         </Row>
                     ))}
             </Wrapper>
