@@ -22,7 +22,7 @@ const TribeEditModal = (
         context.filter.tribes[1]([...context.filter.tribes[0], { ...tribe, color: '#000' }])
     }
     const RemoveTribe = (tribe: ISelectedTribe) => {
-        context.filter.tribes[1](context.filter.tribes[0].filter((x) => x.tribe_id_num == tribe.tribe_id_num))
+        context.filter.tribes[1](context.filter.tribes[0].filter((x) => x.tribe_id_num != tribe.tribe_id_num))
     }
     const UpdateTribeColor = (tribe: ISelectedTribe, hex: string) => {
         context.filter.tribes[1](
